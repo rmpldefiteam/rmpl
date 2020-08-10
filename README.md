@@ -1,4 +1,4 @@
-RMPL
+# RMPL
 
 RMPL is an elastic supply ERC20 Token with randomized rebasing.
 
@@ -9,7 +9,7 @@ RMPL inherits appropriate licenses from upstream project.
 
 RMPL implementation consists of 2 contracts.
 
-RMPL.sol
+### RMPL.sol
 
 -   Basic ERC20 Token with a rebase function, callable by the contract
     owner.
@@ -19,7 +19,7 @@ RMPL.sol
     owner will be locked to ensure no party has control and the
     implementation is completely self governed.
 
-Rebaser.sol:
+### Rebaser.sol:
 
 -   Parent contract to RMPL.sol.
 -   Rebasing at random times within the rebase window (48hrs)
@@ -34,7 +34,7 @@ on are described below.
 
 Please refer to https://github.com/rmpldefi for latest code updates.
 
-Onchain Random rebasing implementation:
+### Onchain Random rebasing implementation:
 
 (as of version 0.8.0)
 
@@ -65,11 +65,11 @@ Onchain Random rebasing implementation:
 -   New rebase stats are updated. (These are accessible via a public
     call to Rebaser contract)
 
-Probability Distribution Function:
+## Probability Distribution Function:
 
-[Details from pdf]
+### [Details from pdf]
 
-Current work in progress BEFORE deploying:
+### Current work in progress BEFORE deploying:
 
 -   Enhanced onchain RNG implementation, current R&D into:
     -   Combination of 1st layer blockhash and 2nd layer oracle call to
