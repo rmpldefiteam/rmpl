@@ -128,7 +128,8 @@ So T is uniformly distributed on {t(1), t(2), … t(N – 1)}.
 >		 = 1 * P[T = t(1)] + 2 * P[T = t(2)] … + (N – 2) * P[T = t(N – 2)] + (N – 1) * P[T = t(N – 1)]
 >		 	= 1 / (N – 1) * {1 + 2 … + (N – 2) + (N – 1)} = N / 2
 
-<br/>
+\
+
 **The rebase happens on average after N/2 hash block releases.** Since N is the expected number of block hashes released in a 48-hour period, the rebase happens on average after 24 hours.
 
 
