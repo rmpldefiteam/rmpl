@@ -67,7 +67,71 @@ Please refer to https://github.com/rmpldefi for latest code updates.
 
 ## Probability Distribution Function:
 
-### [Details from pdf]
+### Random rebase (lag and time)
+
+#### Definitions
+- A block hash is released at each time t(m)
+- N is the expected number of block hashes released in a 48-hour period 
+- Rebase event timing T occurs at one of the block hash release times {t(1), t(2), … t(N – 1)}
+
+Assuming a block hash is released every 12 seconds on average then:
+>		N = 48 (hours) * 60 (minutes) * 60 (seconds) / 12 (seconds) = 14,400
+
+#### Algorithm
+
+At time T = t(1), the first block hash, H(1), is released:
+- Calculate the remainder, R(1), when the block hash H(1) is divided by (N – 1):
+>		H(1) = q(1) * (N – 1) + R(1),			
+*for some integer q(1)*
+
+- If R(1) = 0 then rebase now
+- Otherwise move to the next step
+
+At time T = t(m), the m-th block hash, H(m), is released:
+- Calculate the remainder, R(m), when the block hash H(m) is divided by (N – m):
+>		H(m) = q(m) * (N – m) + R(m),			
+*for some integer q(m)*
+
+- If R(m) = 0 then rebase now
+- Otherwise move to the next step
+
+
+Note that if the algorithm reaches time T = t(N – 1) then the rebase certainly happens at that time.
+ 
+#### Probabilities and expectations
+- H(m) is a very large, randomly generated, number which is much bigger than N
+- Therefore R(m) is approximately uniformly distributed on {0, 1, … (N – m – 1)}
+- By the properties of uniform distributions:
+>		P[R(m) = 0] = P[R(m) = 1] = … = P[R(m) = (N – m – 1)] = 1 / (N – m)
+
+>		P[T = t(1)] = P[R(1) = 0] = 1 / (N – 1) 
+*since R(1) is approximately uniformly distributed on {0, 1, … (N – 1)}*
+
+>		P[T = t(2)] = P[T != 1 AND T = 2]
+>			= P[R(1) != 0 AND R(2) = 0]
+>			= P[R(1) != 0] * P[R(2) = 0]		
+*since R(1) and R(2) are independent*
+>			= {(N – 2) / (N – 1)} * {1 / (N – 2)} = 1 / (N – 1)
+
+Similarly, for t = 3, 4, … (N – 1)
+>		P[T = t(m)] = P[T != 1 AND T != 2 … AND T != (m – 1) AND T = m]
+>			= P[R(1) != 0 AND R(2) != 0 … AND R(m - 1) != 0 AND R(m) = 0]
+>			= P[R(1) != 0] * P[R(2) != 0 ] … * P[R(m - 1) != 0] * P[R(m) = 0]
+*since R(1), R(2) … R(m - 1), R(m) are all independent*
+>		= {(N – 2) / (N – 1)} * {(N – 3) / (N – 2)} * … 
+>		… * {(N – m + 2) / (N – m + 1)} * {1 / (N – m)} = 1 / (N – 1)
+
+So we have **P[T = t(m)] = 1 / (N – 1)** for m in {t(1), t(2), …. t(N – 1)}.
+So T is uniformly distributed on {t(1), t(2), … t(N – 1)}.
+
+>		E[t-1(T)] = 1 * P[t-1(T) = 1] + 2 * P[t-1(T) = 2] … + (N – 2) * P[t-1(T) = (N – 2)] + (N – 1) * P[t-1(T) = (N – 1)]
+>		 = 1 * P[T = t(1)] + 2 * P[T = t(2)] … + (N – 2) * P[T = t(N – 2)] + (N – 1) * P[T = t(N – 1)]
+>		 	= 1 / (N – 1) * {1 + 2 … + (N – 2) + (N – 1)} = N / 2
+
+**The rebase happens on average after N/2 hash block releases.** Since N is the expected number of block hashes released in a 48-hour period, the rebase happens on average after 24 hours.
+
+
+
 
 ### Current work in progress BEFORE deploying:
 
